@@ -4,6 +4,7 @@ import (
 	"context"
 	"feedback_bot/callbacks"
 	"feedback_bot/handlers"
+	"feedback_bot/utils"
 	"fmt"
 	"log"
 	"os"
@@ -13,12 +14,18 @@ import (
 	th "github.com/mymmrac/telego/telegohandler"
 )
 
-var BannedUsers = make(map[int64]bool)
-
 func main() {
+	// Load banlist file and cache
+
+	bl := &utils.BanList{}
+	err := bl.Load("banlist.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// Load .env secrets
 
-	err := godotenv.Load(".env")
+	err = godotenv.Load(".env")
 	if err != nil {
 		log.Fatal(err)
 	}
