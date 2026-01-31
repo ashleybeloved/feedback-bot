@@ -33,7 +33,7 @@ func main() {
 	ctx := context.Background()
 	botToken := os.Getenv("BOT_TOKEN")
 
-	bot, err := telego.NewBot(botToken, telego.WithDefaultDebugLogger())
+	bot, err := telego.NewBot(botToken)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
