@@ -48,4 +48,4 @@ TELEGRAM_ID=your_id
 - Run the bot  
 `go run main.go`
 
-##### If you have any issues with bot you can message me in telegram: [bot](t.me/hback_bot) or [@fuckcensor](t.me/fuckcensor) 
+##### If you have any issues with bot you can message me in telegram: [bot](https://t.me/hback_bot) or [@fuckcensor](https://t.me/fuckcensor) 
