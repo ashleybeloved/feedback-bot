@@ -24,7 +24,7 @@ func Reply(ctx *th.Context, query telego.CallbackQuery) error {
 
 	ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(query.From.ID), fmt.Sprintf("Message for reply %v (only text):", id)))
 
-	return nil
+	return ctx.Bot().AnswerCallbackQuery(ctx, tu.CallbackQuery(query.ID))
 }
 
 func Ban(ctx *th.Context, query telego.CallbackQuery) error {
@@ -47,5 +47,6 @@ func Ban(ctx *th.Context, query telego.CallbackQuery) error {
 	utils.BanListCache.BanUser(int64(id))
 
 	ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(query.From.ID), fmt.Sprintf("%v successfully blocked in bot", id)))
-	return nil
+
+	return ctx.Bot().AnswerCallbackQuery(ctx, tu.CallbackQuery(query.ID))
 }
