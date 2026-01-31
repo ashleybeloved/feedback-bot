@@ -75,6 +75,16 @@ func AdminMiddleware(ctx *th.Context, update telego.Update) error {
 
 		switch state {
 		case "await_reply":
+			if update.Message == nil || update.Message.Text == "" {
+				ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(update.Message.From.ID), "Only text! Try again:"))
+				return nil
+			}
+
+			if update.Message.Text == "cancel" {
+				ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(update.Message.From.ID), "Canceled."))
+				State = "default"
+				return nil
+			}
 			ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(int64(id)), update.Message.Text))
 			ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(update.Message.From.ID), "Successfully replied"))
 			State = "default"

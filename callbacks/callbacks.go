@@ -22,7 +22,7 @@ func Reply(ctx *th.Context, query telego.CallbackQuery) error {
 
 	middleware.State = fmt.Sprintf("await_reply:%v", id)
 
-	ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(query.From.ID), fmt.Sprintf("Message for reply %v (only text):", id)))
+	ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(query.From.ID), fmt.Sprintf("Message for reply %v (\"cancel\" to cancel):", id)))
 
 	return ctx.Bot().AnswerCallbackQuery(ctx, tu.CallbackQuery(query.ID))
 }
