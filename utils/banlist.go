@@ -7,14 +7,14 @@ import (
 	"time"
 )
 
-type BanList struct {
+type Cache struct {
 	Cache    map[int64]time.Time
 	Filename string
 }
 
-var BanListCache = &BanList{}
+var BanListCache = &Cache{}
 
-func (bl *BanList) Load(filename string) error {
+func (bl *Cache) Load(filename string) error {
 	file, err := os.Open(filename)
 	if os.IsNotExist(err) {
 		bl.Cache = make(map[int64]time.Time)
@@ -31,7 +31,7 @@ func (bl *BanList) Load(filename string) error {
 	return json.NewDecoder(file).Decode(&bl.Cache)
 }
 
-func (bl *BanList) save() {
+func (bl *Cache) save() {
 	file, err := os.Create(bl.Filename)
 	if err != nil {
 		log.Fatal(err)
@@ -42,17 +42,17 @@ func (bl *BanList) save() {
 	enc.Encode(bl.Cache)
 }
 
-func (bl *BanList) BanUser(id int64) {
+func (bl *Cache) BanUser(id int64) {
 	bl.Cache[id] = time.Now()
 	bl.save()
 }
 
-func (bl *BanList) UnbanUser(id int64) {
+func (bl *Cache) UnbanUser(id int64) {
 	delete(bl.Cache, id)
 	bl.save()
 }
 
-func (bl *BanList) IsBanned(id int64) bool {
+func (bl *Cache) IsBanned(id int64) bool {
 	_, ok := bl.Cache[id]
 	if ok {
 		return true

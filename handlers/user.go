@@ -37,6 +37,12 @@ func AnyMessage(ctx *th.Context, update telego.Update) error {
 	lastname := update.Message.From.LastName
 	langCode := update.Message.From.LanguageCode
 
+	if username != "" {
+		username = "@" + username
+	} else {
+		username = "no username"
+	}
+
 	// Forward Original Message to Admin and Info About User
 
 	forwardMsg := telego.ForwardMessageParams{

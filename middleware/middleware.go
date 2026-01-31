@@ -11,6 +11,8 @@ import (
 	tu "github.com/mymmrac/telego/telegoutil"
 )
 
+var State = "default"
+
 func UserMiddleware(ctx *th.Context, update telego.Update) error {
 	var userid int64
 
@@ -61,6 +63,23 @@ func AdminMiddleware(ctx *th.Context, update telego.Update) error {
 		}
 
 		return nil
+	}
+
+	if State != "default" {
+		dataState := strings.Split(State, ":")
+		state := dataState[0]
+		id, err := strconv.Atoi(dataState[1])
+		if err != nil {
+			return err
+		}
+
+		switch state {
+		case "await_reply":
+			ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(int64(id)), update.Message.Text))
+			ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(update.Message.From.ID), "Successfully replied"))
+			State = "default"
+			return nil
+		}
 	}
 
 	return ctx.Next(update)

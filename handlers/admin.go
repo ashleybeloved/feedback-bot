@@ -3,6 +3,7 @@ package handlers
 import (
 	"feedback_bot/utils"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -26,6 +27,16 @@ func Ban(ctx *th.Context, update telego.Update) error {
 	id, err := strconv.Atoi(data[1])
 	if err != nil {
 		return err
+	}
+
+	adminId, err := strconv.Atoi(os.Getenv("TELEGRAM_ID"))
+	if err != nil {
+		return err
+	}
+
+	if int64(adminId) == int64(id) {
+		ctx.Bot().SendMessage(ctx, tu.Message(tu.ID(update.Message.From.ID), "You can't ban yourself bro"))
+		return nil
 	}
 
 	utils.BanListCache.BanUser(int64(id))
