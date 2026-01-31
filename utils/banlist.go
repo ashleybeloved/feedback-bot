@@ -12,6 +12,8 @@ type BanList struct {
 	Filename string
 }
 
+var BanListCache = &BanList{}
+
 func (bl *BanList) Load(filename string) error {
 	file, err := os.Open(filename)
 	if os.IsNotExist(err) {
@@ -24,10 +26,9 @@ func (bl *BanList) Load(filename string) error {
 	}
 	defer file.Close()
 
-	dec := json.NewDecoder(file)
-
 	bl.Cache = make(map[int64]time.Time)
-	return dec.Decode(&bl.Cache)
+	bl.Filename = filename
+	return json.NewDecoder(file).Decode(&bl.Cache)
 }
 
 func (bl *BanList) save() {
@@ -49,4 +50,13 @@ func (bl *BanList) BanUser(id int64) {
 func (bl *BanList) UnbanUser(id int64) {
 	delete(bl.Cache, id)
 	bl.save()
+}
+
+func (bl *BanList) IsBanned(id int64) bool {
+	_, ok := bl.Cache[id]
+	if ok {
+		return true
+	}
+
+	return false
 }

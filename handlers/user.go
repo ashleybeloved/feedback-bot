@@ -48,6 +48,7 @@ func AnyMessage(ctx *th.Context, update telego.Update) error {
 	keyboard := tu.InlineKeyboard(
 		tu.InlineKeyboardRow(
 			tu.InlineKeyboardButton("Reply").WithCallbackData(fmt.Sprintf("reply:%v", userId)),
+			tu.InlineKeyboardButton("Ban").WithCallbackData(fmt.Sprintf("ban:%v", userId)),
 		),
 	)
 

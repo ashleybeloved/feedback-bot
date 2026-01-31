@@ -4,6 +4,7 @@ import (
 	"context"
 	"feedback_bot/callbacks"
 	"feedback_bot/handlers"
+	"feedback_bot/middleware"
 	"feedback_bot/utils"
 	"fmt"
 	"log"
@@ -17,8 +18,7 @@ import (
 func main() {
 	// Load banlist file and cache
 
-	bl := &utils.BanList{}
-	err := bl.Load("banlist.json")
+	err := utils.BanListCache.Load("banlist.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,11 +45,23 @@ func main() {
 	defer func() { _ = bh.Stop() }()
 
 	// Handlers and callbacks
+	// User
+
+	bh.Use(middleware.UserMiddleware)
 
 	bh.Handle(handlers.Start, th.CommandEqual("start"))
-	bh.Handle(handlers.AnyMessage, th.AnyMessage())
 
-	bh.HandleCallbackQuery(callbacks.Reply, th.CallbackDataContains("reply"))
+	// Admin
+
+	bh.Use(middleware.AdminMiddleware)
+
+	bh.Handle(handlers.Ban, th.CommandEqual("ban"))
+	bh.Handle(handlers.Unban, th.CommandEqual("unban"))
+
+	bh.HandleCallbackQuery(callbacks.Reply, th.CallbackDataContains("reply:"))
+	bh.HandleCallbackQuery(callbacks.Ban, th.CallbackDataContains("ban:"))
+
+	bh.Handle(handlers.AnyMessage, th.AnyMessage())
 
 	log.Print("Bot started on @", bot.Username())
 
