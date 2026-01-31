@@ -46,9 +46,10 @@ func AnyMessage(ctx *th.Context, update telego.Update) error {
 	// Forward Original Message to Admin and Info About User
 
 	forwardMsg := telego.ForwardMessageParams{
-		ChatID:     tu.ID(int64(adminId)),
-		FromChatID: update.Message.Chat.ChatID(),
-		MessageID:  update.Message.MessageID,
+		ChatID:              tu.ID(int64(adminId)),
+		FromChatID:          tu.ID(update.Message.Chat.ID),
+		MessageID:           update.Message.MessageID,
+		DisableNotification: true,
 	}
 
 	keyboard := tu.InlineKeyboard(

@@ -54,7 +54,7 @@ func AdminMiddleware(ctx *th.Context, update telego.Update) error {
 	}
 
 	if int64(adminId) != userid {
-		if update.Message != nil && update.Message.Text != "" {
+		if update.Message != nil {
 			if strings.HasPrefix(update.Message.Text, "/") {
 				return nil
 			}
