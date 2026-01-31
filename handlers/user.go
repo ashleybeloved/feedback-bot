@@ -15,7 +15,7 @@ func Start(ctx *th.Context, update telego.Update) error {
 
 	msg := tu.Message(
 		tu.ID(update.Message.From.ID),
-		"Hi! You can sent any message for @"+adminUsername+" with this bot, just type or sent anything you want",
+		"Hi! You can sent any message for @"+adminUsername+" with this bot.",
 	)
 
 	ctx.Bot().SendMessage(ctx, msg)
