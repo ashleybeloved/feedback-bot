@@ -39,8 +39,8 @@ TELEGRAM_ID=your_id
 ### Installation
 
 - Clone the repository  
-`git clone https://github.com/ashleybeloved/feedback_bot.git`  
-`cd feedback_bot`
+`git clone https://github.com/ashleybeloved/feedback-bot.git`  
+`cd feedback-bot`
 
 - Create environment file  
 `nano .env`
